@@ -1,3 +1,4 @@
+/* Présentation */
 .presentation {
   padding: 2rem;
   background-color: #111;
@@ -50,25 +51,37 @@
   background-color: #e6b800;
 }
 
+/* Carrousel de Services */
 .services-carousel {
   padding: 2rem;
   background-color: #f8f8f8;
+  overflow-x: auto; /* Ajout du défilement horizontal */
+  white-space: nowrap; /* Empêche le retour à la ligne des éléments */
+}
+
+.services-list {
+  display: flex;
+  gap: 1.5rem;
 }
 
 .service-item {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0 1.5rem;
   text-align: center;
   overflow: hidden;
-  transition: transform 0.3s;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  display: inline-block;
+  flex: 0 0 30%; /* Pour afficher trois éléments par ligne */
   width: 350px;
   height: 450px;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.service-item.animate {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .service-item img {
@@ -94,6 +107,7 @@
   transform: translateY(-10px);
 }
 
+/* Section des Gammes */
 .gammes-section {
   padding: 2rem;
   background-color: #111;
@@ -126,6 +140,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.gamme-item.animate {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .gamme-item img {
@@ -149,6 +171,7 @@
   margin-bottom: 0.5rem;
 }
 
+/* Footer */
 .footer {
   background-color: #000;
   color: #fff;

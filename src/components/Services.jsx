@@ -1,44 +1,58 @@
-import React from "react";
-import Slider from "react-slick";
+import React, { useEffect, useRef } from "react";
 import "./Services.css";
 import serviceImage1 from "../assets/service1.jpg";
 import serviceImage2 from "../assets/service2.jpg";
 import serviceImage3 from "../assets/service3.jpg";
 import serviceImage4 from "../assets/service4.jpg";
 import serviceImage5 from "../assets/service5.jpg";
-import gammeImage1 from "../assets/gamme1.jpg"; // Remplacez par vos propres images
+import gammeImage1 from "../assets/gamme1.jpg";
 import gammeImage2 from "../assets/gamme2.jpg";
 import gammeImage3 from "../assets/gamme3.jpg";
 import gammeImage4 from "../assets/gamme4.jpg";
 import gammeImage5 from "../assets/gamme5.jpg";
-import presentationImage from "../assets/presentation.jpg"; // Remplacez par votre image
+import presentationImage from "../assets/presentation.jpg";
 
 const Services = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+  const serviceItemsRef = useRef([]);
+  const gammeItemsRef = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add("animate");
+          }, 300); // Retard de 300ms avant l'ajout de la classe animate
+        }
+      });
+    });
+
+    serviceItemsRef.current.forEach((item) => {
+      if (item) {
+        observer.observe(item);
+      }
+    });
+
+    gammeItemsRef.current.forEach((item) => {
+      if (item) {
+        observer.observe(item);
+      }
+    });
+
+    return () => {
+      serviceItemsRef.current.forEach((item) => {
+        if (item) {
+          observer.unobserve(item);
+        }
+      });
+
+      gammeItemsRef.current.forEach((item) => {
+        if (item) {
+          observer.unobserve(item);
+        }
+      });
+    };
+  }, []);
 
   const services = [
     {
@@ -63,13 +77,13 @@ const Services = () => {
       title: "Longue distance",
       description:
         "Découvrez l’ultime expérience du voyage avec notre service de transport longue distance haut de gamme. Parcourez les routes dans un luxe incomparable, où le confort et le raffinement se marient à la perfection.",
-      image: serviceImage4,
+      image: serviceImage5,
     },
     {
       title: "Transfert aéroport",
       description:
         "Nous assurons des transferts vers et depuis les principaux aéroports parisiens, incluant Orly, Roissy-Charles de Gaulle, Le Bourget et Beauvais, garantissant des trajets sûrs et sans tracas pour votre voyage.",
-      image: serviceImage5,
+      image: serviceImage4,
     },
   ];
 
@@ -84,28 +98,6 @@ const Services = () => {
         "Sièges enfants",
       ],
       image: gammeImage1,
-    },
-    {
-      title: "Gamme Classic Premium",
-      description: [
-        "Jusqu'à 3 passagers",
-        "Jusqu'à 3 bagages",
-        "Wi-fi",
-        "Rafraîchissement",
-        "Sièges enfants",
-      ],
-      image: gammeImage2,
-    },
-    {
-      title: "Gamme Premium",
-      description: [
-        "Jusqu'à 3 passagers",
-        "Jusqu'à 3 bagages",
-        "Wi-fi",
-        "Rafraîchissement",
-        "Sièges enfants",
-      ],
-      image: gammeImage3,
     },
     {
       title: "Gamme Luxury",
@@ -135,7 +127,7 @@ const Services = () => {
     <div>
       <div className="presentation">
         <div className="presentation-content">
-          <h2>Luxury transport à Paris</h2>
+          <h2>??? transport à Paris</h2>
           <div className="presentation-body">
             <img
               src={presentationImage}
@@ -144,8 +136,8 @@ const Services = () => {
             />
             <div className="presentation-text">
               <p>
-                Luxury Transport est une société spécialisée dans le transport
-                de personnes, offrant ses services de transfert aéroport, Paris
+                ??? Transport est une société spécialisée dans le transport de
+                personnes, offrant ses services de transfert aéroport, Paris
                 intra-muros, mise à disposition, longue distance et Évènements.
               </p>
               <p>
@@ -165,15 +157,19 @@ const Services = () => {
       </div>
 
       <div className="services-carousel" id="services">
-        <Slider {...settings}>
+        <div className="services-list">
           {services.map((service, index) => (
-            <div key={index} className="service-item">
+            <div
+              key={index}
+              className="service-item"
+              ref={(el) => (serviceItemsRef.current[index] = el)}
+            >
               <img src={service.image} alt={service.title} />
               <h3>{service.title}</h3>
               <p>{service.description}</p>
             </div>
           ))}
-        </Slider>
+        </div>
       </div>
 
       <div className="gammes-section">
@@ -190,7 +186,11 @@ const Services = () => {
         </p>
         <div className="gammes-list">
           {gammes.map((gamme, index) => (
-            <div key={index} className="gamme-item">
+            <div
+              key={index}
+              className="gamme-item"
+              ref={(el) => (gammeItemsRef.current[index] = el)}
+            >
               <img src={gamme.image} alt={gamme.title} />
               <h3>{gamme.title}</h3>
               <ul>
